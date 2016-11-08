@@ -1,0 +1,158 @@
+<html>
+<head>
+    <title>Simple login</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key="></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <style>
+
+        #map-canvas {
+            height: 30em;
+            width: 40em;
+            margin-left: 350px;
+        }
+        th {
+            background-color: #8EF19A;
+            color: black;
+        }
+    </style>
+    <script>
+        $(document).ready(function(){
+            var marker;
+            $("#submit").click(function(){
+
+                $.get("https://cse5335-jsp9739.herokuapp.com/login", function(data){
+
+                    $('#containerdiv').show();
+                    var serverdata = $("#serverdata");
+                    serverdata.empty();
+
+                    var json = JSON.stringify(data);
+                    json = JSON.parse(json);
+                    json = json.students;
+
+                    $.each(json, function(key, info) {
+                        var row = $("<tr></tr>");
+
+                        var name = $("<td>"+info.name+"</td>");
+                        var phone = $("<td>"+info.phone+"</td>");
+                        var DOB = $("<td>"+info.DOB+"</td>");
+                        var company = $("<td>"+info.company+"</td>");
+                        var jobtype = $("<td>"+info.jobtype+"</td>");
+                        var school = $("<td>"+info.school+"</td>");
+                        var gpa = $("<td>"+info.gpa+"</td>");
+                        var degree = $("<td>"+info.degree+"</td>");
+                        var major = $("<td>"+info.major+"</td>");
+                        var gender = $("<td>"+info.gender+"</td>");
+                        var nationality = $("<td>"+info.nationality+"</td>");
+                        var address = $("<td>"+info.address.street_address+" "+info.address.city+" "+info.address.state+" "+info.address.zip+"</td>");
+                        var latlng = $("<td><a class=\"btn btn-warning map\" data-latlng=\""+info.longitude+","+info.latitude+"\">GetMap</a></td>");
+
+                        name.appendTo(row);
+                        phone.appendTo(row);
+                        DOB.appendTo(row);
+                        company.appendTo(row);
+                        jobtype.appendTo(row);
+                        school.appendTo(row);
+                        gpa.appendTo(row);
+                        degree.appendTo(row);
+                        major.appendTo(row);
+                        gender.appendTo(row);
+                        nationality.appendTo(row);
+                        address.appendTo(row);
+                        latlng.appendTo(row);
+
+                        row.appendTo(serverdata);
+
+                    });
+
+                });
+            });
+
+            $( document ).on( 'click', '.map', function() {
+                var latLng = jQuery(this).attr("data-latLng");
+                latLng = latLng.split(",");
+                var mapOptions = {
+                    center: new google.maps.LatLng(latLng[0],latLng[1]),
+                    zoom: 8,
+                    mapTypeId:google.maps.MapTypeId.ROADMAP
+                };
+                var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(latLng[0],latLng[1]),
+                    map: map
+                  });
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+            });
+
+        });
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand bold center">Web Data Management Class !!!</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="/">Home</a></li>
+            </ul>
+
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+<button type="button" class="btn btn-primary" id="submit" style="margin-top: 70px;margin-left:50px;">Get JSON data from Server</button>
+
+
+<div class="container" id="containerdiv" hidden="true" style="margin-top: 50px;">
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Data received from Server:</h3>
+        </div>
+
+        <div class="panel-body">
+            <table class="table">
+                <thead class="thead-inverse">
+                <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>DOB</th>
+                    <th>Company</th>
+                    <th>Job Type</th>
+                    <th>School</th>
+                    <th>GPA</th>
+
+                    <th>Degree</th>
+                    <th>Major</th>
+                    <th>Gender</th>
+                    <th>Nationality</th>
+                    <th>Address</th>
+                    <th>Map</th>
+                </tr>
+                </thead>
+                <tbody id="serverdata" class="table-striped">
+
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Google Map:</h3>
+        </div>
+
+        <div class="panel-body">
+            <div id="map-canvas"></div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
