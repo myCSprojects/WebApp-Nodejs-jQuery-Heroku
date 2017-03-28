@@ -1,5 +1,7 @@
 # CSE 5335 Project 1 ‐ Spring 2016
 
+Web app to fetch data from MongoDB and display on client side.
+
 This is a web application developed by using below technologies.
 
 - Node.js - server side framework
@@ -7,6 +9,7 @@ This is a web application developed by using below technologies.
 - HTML 
 - CSS
 - RestFul web services
+- DBaaS MongoDB (mlab)
 
 ### Why Node.js as server side framework?
 
