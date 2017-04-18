@@ -1,6 +1,6 @@
 # CSE 5335 Project 1 ‐ Spring 2016
 
-Web app to fetch data from MongoDB and display on client side.
+Web app to fetch data from MongoDB and display on client side: https://cse5335-jsp9739.herokuapp.com/
 
 This is a web application developed by using below technologies.
 
